@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prova Remota - Teste de Software</title>
+  <style>
+:root {
+  --bg: #f3f5f9;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #667085;
+  --border: #d9dee8;
+  --primary: #2454a6;
+  --primary-dark: #163b79;
+  --danger: #b42318;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, #eef3ff 0%, #f8fafc 100%);
+}
+
+.container {
+  width: min(980px, 94vw);
+  margin: 32px auto;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 16px 45px rgba(31, 41, 55, 0.08);
+}
+
+.hidden { display: none !important; }
+
+.tag {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 13px;
+}
+
+h1, h2 { margin: 0 0 10px; }
+.subtitle, .muted { color: var(--muted); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 26px;
+}
+
+label {
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+input, select, textarea {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 14px;
+  font-size: 16px;
+  background: #fff;
+  font-family: inherit;
+}
+
+textarea {
+  min-height: 170px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 3px solid rgba(36, 84, 166, .15);
+  border-color: var(--primary);
+}
+
+button {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover { transform: translateY(-1px); }
+button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+.primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.primary:hover { background: var(--primary-dark); }
+
+.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.between {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notice {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border: 1px solid #c9d7f2;
+  background: #f4f7ff;
+  border-radius: 14px;
+  color: #344054;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.timer {
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--primary);
+  background: #eef3ff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.progress-wrapper {
+  width: 100%;
+  height: 10px;
+  background: #eef0f5;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 18px 0 26px;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  transition: width .25s ease;
+}
+
+.question-box {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  background: #fbfcff;
+}
+
+.question {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 0 0 18px;
+}
+
+.alternatives {
+  display: grid;
+  gap: 12px;
+}
+
+.option {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.option:hover { border-color: var(--primary); }
+.option input { margin-top: 2px; }
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+  margin: 18px 0 24px;
+  flex-wrap: wrap;
+}
+
+.review { display: grid; gap: 16px; }
+
+.review-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  background: #fbfcff;
+}
+
+.answer { font-weight: 700; }
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+  .topbar, .between { flex-direction: column; align-items: stretch; }
+  .actions { flex-direction: column; }
+  button { width: 100%; }
+}
+
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section id="tela-inicial" class="card">
+      <p class="tag">Avaliação remota</p>
+      <h1>Prova Randômica: Qualidade e Teste de Software</h1>
+      <p class="subtitle">Arquivo único. A prova exibirá 10 questões sorteadas automaticamente: 8 objetivas e 2 abertas.</p>
+
+      <div class="grid">
+        <label>Nome do aluno
+          <input id="nomeAluno" type="text" placeholder="Digite seu nome completo" />
+        </label>
+
+        <label>Turma
+          <input id="turmaAluno" type="text" placeholder="Ex.: ADS3N1" />
+        </label>
+
+        <label>Quantidade de questões
+          <input id="qtdQuestoes" type="text" value="10 questões fixas" readonly />
+        </label>
+
+        <label>Tempo de prova
+          <select id="tempoProva">
+            <option value="0">Sem cronômetro</option>
+            <option value="30" selected>30 minutos</option>
+            <option value="50">50 minutos</option>
+            <option value="60">60 minutos</option>
+            <option value="90">90 minutos</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="notice">
+        <strong>Como funciona:</strong> baixe este arquivo, abra no navegador, responda a prova e clique em <strong>Baixar respostas em TXT</strong> ao finalizar.
+      </div>
+
+      <div class="actions">
+        <button id="btnIniciar" class="primary">Iniciar prova</button>
+      </div>
+    </section>
+
+    <section id="tela-prova" class="card hidden">
+      <div class="topbar">
+        <div>
+          <p id="dadosAluno" class="muted"></p>
+          <h2 id="progresso"></h2>
+          <p id="metadadosQuestao" class="tag"></p>
+        </div>
+        <div id="cronometro" class="timer"></div>
+      </div>
+
+      <div class="progress-wrapper">
+        <div id="barraProgresso" class="progress"></div>
+      </div>
+
+      <article class="question-box">
+        <p id="enunciado" class="question"></p>
+        <div id="areaResposta"></div>
+      </article>
+
+      <div class="actions between">
+        <button id="btnAnterior">Anterior</button>
+        <button id="btnProxima" class="primary">Próxima</button>
+        <button id="btnFinalizar" class="danger hidden">Finalizar prova</button>
+      </div>
+    </section>
+
+    <section id="tela-resultado" class="card hidden">
+      <p class="tag">Envio da avaliação</p>
+      <h1 id="tituloResultado">Prova finalizada</h1>
+      <p id="detalheResultado" class="subtitle"></p>
+
+      <div class="notice">
+        Para enviar ao professor, clique em <strong>Baixar respostas em TXT</strong> e encaminhe o arquivo pelo canal definido.
+      </div>
+
+      <div class="result-actions">
+        <button id="btnBaixarResultado" class="primary">Baixar respostas em TXT</button>
+        <button id="btnCopiarResumo">Copiar resumo</button>
+        <button id="btnReiniciar">Nova prova</button>
+      </div>
+
+      <div id="resumoFinal" class="review"></div>
+    </section>
+  </main>
+
+  <script>
+window.QUESTOES = [
+  {
+    "id": 1,
+    "tipo": "objetiva",
+    "nivel": "Fácil",
+    "bloom": "Lembrar",
+    "enunciado": "Uma equipe está iniciando um projeto de sistema acadêmico e deseja definir critérios mínimos para avaliar se o produto atende às necessidades dos usuários. Considerando os fundamentos de qualidade de software, qual alternativa melhor representa o objetivo central da qualidade nesse contexto?",
+    "alternativas": [
+      "Garantir apenas que o sistema seja entregue rapidamente.",
+      "Verificar somente se o código foi escrito em uma linguagem moderna.",
+      "Assegurar que o software atenda às necessidades dos usuários e aos requisitos definidos.",
+      "Evitar qualquer alteração no sistema após a primeira entrega.",
+      "Substituir os testes por validações feitas apenas pelo cliente final."
+    ],
+    "correta": 2,
+    "explicacao": "Qualidade de software envolve atender necessidades explícitas e implícitas dos usuários, além dos requisitos do produto e do processo."
+  },
+  {
+    "id": 2,
+    "tipo": "objetiva",
+    "nivel": "Fácil",
+    "bloom": "Compreender",
+    "enunciado": "Uma empresa afirma que seu software é de qualidade porque possui interface bonita. Entretanto, os usuários relatam lentidão, falhas frequentes e dificuldade de adaptação em outros ambientes. Nesse caso, qual conclusão é mais adequada?",
+    "alternativas": [
+      "A aparência é suficiente para definir a qualidade total do software.",
+      "A qualidade deve considerar múltiplos atributos, como desempenho, robustez, usabilidade e portabilidade.",
+      "A qualidade depende apenas da opinião da equipe de desenvolvimento.",
+      "A portabilidade não é um requisito de qualidade.",
+      "Falhas frequentes não interferem na percepção de qualidade."
+    ],
+    "correta": 1,
+    "explicacao": "A qualidade de software envolve vários atributos, não apenas aparência ou interface."
+  },
+  {
+    "id": 3,
+    "tipo": "objetiva",
+    "nivel": "Fácil",
+    "bloom": "Lembrar",
+    "enunciado": "Em um sistema de vendas, um requisito estabelece que as consultas de produtos devem responder em até dois segundos. Esse requisito está mais diretamente relacionado a qual atributo de qualidade?",
+    "alternativas": [
+      "Reusabilidade",
+      "Portabilidade",
+      "Desempenho",
+      "Aparência",
+      "Conformidade visual"
+    ],
+    "correta": 2,
+    "explicacao": "Tempo de resposta, velocidade de processamento e uso eficiente de recursos são características de desempenho."
+  },
+  {
+    "id": 4,
+    "tipo": "objetiva",
+    "nivel": "Fácil",
+    "bloom": "Compreender",
+    "enunciado": "Uma aplicação continua funcionando mesmo quando o usuário insere dados inesperados, apresentando mensagens claras e mantendo a integridade das informações. Qual requisito de qualidade está sendo evidenciado?",
+    "alternativas": [
+      "Robustez",
+      "Portabilidade",
+      "Aparência",
+      "Features",
+      "Precificação"
+    ],
+    "correta": 0,
+    "explicacao": "Robustez é a capacidade de resistir a falhas e operar mesmo em condições inesperadas."
+  },
+  {
+    "id": 5,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Aplicar",
+    "enunciado": "Uma fábrica de software deseja melhorar seus processos para reduzir retrabalho e aumentar previsibilidade. A coordenação propõe usar um modelo com níveis de maturidade para orientar a evolução organizacional. Qual alternativa representa melhor essa proposta?",
+    "alternativas": [
+      "Aplicar apenas testes manuais no final do projeto.",
+      "Utilizar um modelo como CMMI ou MPS.BR para estruturar a melhoria contínua dos processos.",
+      "Eliminar documentação para acelerar o desenvolvimento.",
+      "Avaliar apenas a interface visual do produto.",
+      "Substituir todos os desenvolvedores por ferramentas automáticas."
+    ],
+    "correta": 1,
+    "explicacao": "Modelos como CMMI e MPS.BR apoiam a padronização, a melhoria e a maturidade dos processos de software."
+  },
+  {
+    "id": 6,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Analisar",
+    "enunciado": "Uma empresa entrega sistemas que funcionam corretamente, mas cada equipe trabalha de forma diferente, sem padrões, sem registros e sem controle de qualidade. O principal problema está relacionado a:",
+    "alternativas": [
+      "Qualidade de aparência.",
+      "Qualidade de processo.",
+      "Qualidade percebida exclusivamente pelo marketing.",
+      "Portabilidade do produto.",
+      "Uso de cores na interface."
+    ],
+    "correta": 1,
+    "explicacao": "A qualidade de processo trata da forma como o software é produzido, com padronização, controle e melhoria contínua."
+  },
+  {
+    "id": 7,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Aplicar",
+    "enunciado": "Um aplicativo de saúde será usado por idosos. Durante a avaliação, percebeu-se que muitos usuários esquecem os caminhos para chegar às funcionalidades principais. Qual princípio ergonômico deve ser priorizado?",
+    "alternativas": [
+      "Memória mínima do usuário.",
+      "Aumento da complexidade visual.",
+      "Exigência de comandos técnicos.",
+      "Redução de feedbacks.",
+      "Eliminação da documentação."
+    ],
+    "correta": 0,
+    "explicacao": "Memória mínima do usuário busca reduzir a necessidade de memorização, usando linguagem natural, comandos simples e elementos visíveis."
+  },
+  {
+    "id": 8,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Analisar",
+    "enunciado": "Durante o cadastro em um sistema, o usuário clica por engano no botão de excluir e não encontra uma forma de desfazer a ação. Qual heurística de Nielsen foi mais claramente violada?",
+    "alternativas": [
+      "Design estético e minimalista.",
+      "Controle e liberdade do usuário.",
+      "Ajuda e documentação.",
+      "Compatibilidade entre o sistema e o mundo real.",
+      "Reconhecimento em vez de recordação."
+    ],
+    "correta": 1,
+    "explicacao": "Controle e liberdade do usuário exige saídas claras para ações feitas por engano, como cancelar ou desfazer."
+  },
+  {
+    "id": 9,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Aplicar",
+    "enunciado": "Uma equipe deseja organizar o menu de um portal educacional a partir da forma como os próprios alunos agrupam os conteúdos. Qual técnica de avaliação de usabilidade é mais indicada?",
+    "alternativas": [
+      "Teste de regressão",
+      "Card Sorting",
+      "Teste unitário",
+      "Teste de integração",
+      "Controle de versão"
+    ],
+    "correta": 1,
+    "explicacao": "Card Sorting é usado para estruturar informações, menus e categorias com base na lógica dos usuários."
+  },
+  {
+    "id": 10,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Aplicar",
+    "enunciado": "Uma loja virtual quer comparar duas versões da página de pagamento para identificar qual gera maior taxa de conclusão de compra. Qual método é mais adequado?",
+    "alternativas": [
+      "Teste A/B",
+      "Teste de unidade",
+      "CMMI",
+      "Teste de sistema operacional",
+      "MPS.BR"
+    ],
+    "correta": 0,
+    "explicacao": "O Teste A/B compara versões de uma interface com base em métricas definidas."
+  },
+  {
+    "id": 11,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Compreender",
+    "enunciado": "No contexto da ISO 9241-11, a usabilidade é melhor compreendida como:",
+    "alternativas": [
+      "A quantidade de telas existentes em um sistema.",
+      "A beleza visual da interface, independentemente do uso.",
+      "A eficácia, eficiência e satisfação com que usuários alcançam objetivos em determinado contexto.",
+      "A obrigatoriedade de usar apenas testes automatizados.",
+      "A capacidade do software funcionar sem banco de dados."
+    ],
+    "correta": 2,
+    "explicacao": "A ISO 9241-11 relaciona usabilidade à eficácia, eficiência e satisfação em contextos definidos de uso."
+  },
+  {
+    "id": 12,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Analisar",
+    "enunciado": "Uma equipe realiza commits pequenos, frequentes, com mensagens descritivas e revisões de código. Essas práticas contribuem principalmente para:",
+    "alternativas": [
+      "Dificultar o rastreamento das alterações.",
+      "Melhorar o controle de versão, a colaboração e a rastreabilidade do código.",
+      "Eliminar a necessidade de testes.",
+      "Garantir que o software nunca apresente defeitos.",
+      "Substituir a análise de requisitos."
+    ],
+    "correta": 1,
+    "explicacao": "Boas práticas de controle de versão favorecem colaboração, rastreabilidade e revisão de mudanças."
+  },
+  {
+    "id": 13,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Compreender",
+    "enunciado": "Uma função que calcula o desconto de um produto é testada isoladamente, sem depender de banco de dados, tela ou outros módulos. Esse é um exemplo de:",
+    "alternativas": [
+      "Teste de aceitação",
+      "Teste unitário",
+      "Teste de sistema",
+      "Teste de usabilidade",
+      "Teste beta"
+    ],
+    "correta": 1,
+    "explicacao": "O teste unitário valida pequenas partes do código, como funções ou componentes, de forma isolada."
+  },
+  {
+    "id": 14,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Aplicar",
+    "enunciado": "Após validar separadamente os módulos de login e pagamento, a equipe precisa verificar se eles funcionam corretamente quando utilizados juntos. Qual tipo de teste deve ser priorizado?",
+    "alternativas": [
+      "Teste de integração",
+      "Teste de unidade",
+      "Teste de aceitação visual",
+      "Card Sorting",
+      "Teste de ergonomia física"
+    ],
+    "correta": 0,
+    "explicacao": "O teste de integração verifica se módulos ou componentes funcionam corretamente em conjunto."
+  },
+  {
+    "id": 15,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Aplicar",
+    "enunciado": "Um cliente deseja confirmar se o sistema entregue atende às necessidades reais do usuário final antes da implantação. Qual tipo de teste é mais adequado?",
+    "alternativas": [
+      "Teste de aceitação",
+      "Teste unitário",
+      "Teste de compilação",
+      "Teste de sintaxe",
+      "Teste de branch"
+    ],
+    "correta": 0,
+    "explicacao": "O teste de aceitação confirma se o software atende às necessidades e expectativas do usuário final."
+  },
+  {
+    "id": 16,
+    "tipo": "objetiva",
+    "nivel": "Médio",
+    "bloom": "Compreender",
+    "enunciado": "Após uma alteração no módulo de matrícula, a equipe executa testes em funcionalidades antigas para verificar se nada foi quebrado. Esse procedimento caracteriza:",
+    "alternativas": [
+      "Teste de regressão",
+      "Teste de memorização",
+      "Teste de aparência",
+      "Teste de card sorting",
+      "Teste de maturidade"
+    ],
+    "correta": 0,
+    "explicacao": "Teste de regressão verifica se novas mudanças não introduziram defeitos em funcionalidades já existentes."
+  },
+  {
+    "id": 17,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Analisar",
+    "enunciado": "Uma equipe executa sempre o mesmo conjunto de testes e, com o tempo, deixa de encontrar novos defeitos, embora usuários continuem relatando problemas. Qual princípio de testes explica melhor essa situação?",
+    "alternativas": [
+      "Testes exaustivos são sempre possíveis.",
+      "Paradoxo do pesticida.",
+      "Qualidade percebida elimina defeitos.",
+      "Validação substitui verificação.",
+      "Usabilidade impede falhas de integração."
+    ],
+    "correta": 1,
+    "explicacao": "O paradoxo do pesticida indica que repetir sempre os mesmos testes tende a perder eficácia; os testes devem ser revisados e atualizados."
+  },
+  {
+    "id": 18,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Analisar",
+    "enunciado": "Uma empresa deseja testar todas as combinações possíveis de entradas em um sistema com muitas regras de negócio. Após estimar o esforço, percebe que seria inviável. Qual princípio dos testes justifica a necessidade de priorizar cenários por risco?",
+    "alternativas": [
+      "Testes exaustivos são impossíveis.",
+      "Todo teste prova ausência de defeitos.",
+      "Apenas testes manuais são confiáveis.",
+      "Testes devem começar somente após a entrega.",
+      "Testes eliminam a necessidade de requisitos."
+    ],
+    "correta": 0,
+    "explicacao": "Testar todas as combinações possíveis é impraticável; por isso, os testes devem ser focados, priorizados e baseados em riscos."
+  },
+  {
+    "id": 19,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Avaliar",
+    "enunciado": "Um gerente decide iniciar os testes apenas quando o sistema estiver completo, alegando que isso reduz custo. Considerando boas práticas de qualidade, qual avaliação é mais adequada?",
+    "alternativas": [
+      "A decisão é adequada, pois testes iniciais aumentam defeitos.",
+      "A decisão é inadequada, pois testes antecipados ajudam a identificar defeitos precocemente e reduzem retrabalho.",
+      "A decisão é adequada somente se não houver requisitos.",
+      "A decisão elimina a necessidade de validação.",
+      "A decisão garante cobertura total."
+    ],
+    "correta": 1,
+    "explicacao": "Testes antecipados economizam tempo e dinheiro ao identificar problemas nas fases iniciais."
+  },
+  {
+    "id": 20,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Analisar",
+    "enunciado": "Analise o mapa mental textual: QUALIDADE DO SISTEMA → Funcionalidade, Confiabilidade, Usabilidade, Eficiência, Manutenção, Portabilidade. USO → Eficácia, Satisfação, Produtividade, Segurança. A partir desse mapa, qual interpretação é mais adequada?",
+    "alternativas": [
+      "Qualidade do sistema e qualidade em uso são dimensões que se complementam na avaliação do software.",
+      "A usabilidade substitui todos os outros atributos de qualidade.",
+      "A produtividade é um atributo exclusivo da equipe de desenvolvimento.",
+      "A portabilidade não influencia a qualidade.",
+      "A segurança não se relaciona à experiência do usuário."
+    ],
+    "correta": 0,
+    "explicacao": "O mapa indica que a qualidade deve ser vista tanto pelos atributos internos/externos do sistema quanto pela experiência de uso."
+  },
+  {
+    "id": 21,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Avaliar",
+    "enunciado": "Uma empresa implementou testes unitários, mas continua tendo falhas quando módulos trocam dados entre si. Qual decisão técnica é mais adequada?",
+    "alternativas": [
+      "Remover os testes unitários.",
+      "Adicionar testes de integração para verificar a comunicação entre módulos.",
+      "Executar apenas testes de usabilidade.",
+      "Trocar o sistema de versionamento.",
+      "Evitar qualquer teste automatizado."
+    ],
+    "correta": 1,
+    "explicacao": "Testes unitários não substituem testes de integração; ambos atuam em níveis diferentes."
+  },
+  {
+    "id": 22,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Avaliar",
+    "enunciado": "Uma equipe precisa definir uma estratégia de testes para um sistema bancário. O módulo de transferência concentra regras críticas e histórico de defeitos. Qual decisão é mais coerente com o princípio de agrupamento de defeitos?",
+    "alternativas": [
+      "Distribuir o mesmo esforço de teste para todos os módulos, sem considerar riscos.",
+      "Priorizar testes no módulo crítico, pois muitos defeitos podem se concentrar em poucas partes do sistema.",
+      "Ignorar o módulo por ele já ter sido testado uma vez.",
+      "Testar apenas a interface visual.",
+      "Executar somente testes de aceitação com usuários leigos."
+    ],
+    "correta": 1,
+    "explicacao": "O princípio de agrupamento de defeitos indica que muitos problemas tendem a se concentrar em poucos módulos."
+  },
+  {
+    "id": 23,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Analisar",
+    "enunciado": "Em uma revisão, a equipe percebe que o sistema foi construído conforme a especificação, mas a solução não resolve o problema real do usuário. Qual distinção explica melhor o ocorrido?",
+    "alternativas": [
+      "A verificação pode indicar conformidade com especificações, enquanto a validação avalia se o produto atende à necessidade real do usuário.",
+      "A validação serve apenas para revisar código-fonte.",
+      "A verificação é feita somente por clientes externos.",
+      "Validação e verificação são exatamente a mesma atividade.",
+      "A validação elimina a necessidade de testes de aceitação."
+    ],
+    "correta": 0,
+    "explicacao": "Verificação pergunta se o produto foi construído corretamente; validação pergunta se foi construído o produto certo para o usuário."
+  },
+  {
+    "id": 24,
+    "tipo": "objetiva",
+    "nivel": "Difícil",
+    "bloom": "Avaliar",
+    "enunciado": "Uma equipe deseja criar casos de teste a partir de histórias de usuário, critérios de aceitação e requisitos não funcionais. Em qual etapa do ciclo de vida dos testes essa atividade se encaixa melhor?",
+    "alternativas": [
+      "Projeto e desenvolvimento dos casos de teste.",
+      "Publicação em redes sociais.",
+      "Encerramento do contrato.",
+      "Venda do produto.",
+      "Escolha do nome da empresa."
+    ],
+    "correta": 0,
+    "explicacao": "A criação de cenários estruturados, entradas, ações e resultados esperados faz parte do projeto e desenvolvimento dos casos de teste."
+  },
+  {
+    "id": 25,
+    "tipo": "aberta",
+    "nivel": "Fácil",
+    "bloom": "Compreender",
+    "enunciado": "Explique, com suas palavras, a diferença entre qualidade de produto e qualidade de processo. Apresente um exemplo prático para cada uma.",
+    "criterios": [
+      "Diferenciar produto de processo.",
+      "Apresentar exemplo coerente de qualidade de produto.",
+      "Apresentar exemplo coerente de qualidade de processo."
+    ],
+    "resposta_esperada": "Qualidade de produto está relacionada às características do software entregue, como usabilidade, desempenho, confiabilidade e segurança. Qualidade de processo está ligada à forma como o software é desenvolvido, incluindo padronização, planejamento, controle, testes e melhoria contínua."
+  },
+  {
+    "id": 26,
+    "tipo": "aberta",
+    "nivel": "Médio",
+    "bloom": "Aplicar",
+    "enunciado": "Considere um aplicativo escolar que apresenta erros frequentes no lançamento de notas e lentidão nos horários de maior acesso. Proponha três tipos de teste que deveriam ser aplicados e justifique cada escolha.",
+    "criterios": [
+      "Indicar testes adequados ao cenário.",
+      "Justificar a relação entre teste e problema.",
+      "Considerar aspectos funcionais e não funcionais."
+    ],
+    "resposta_esperada": "Poderiam ser aplicados testes de sistema ou aceitação para validar o lançamento de notas, testes de integração para verificar comunicação entre módulos e testes de desempenho para avaliar lentidão em horários de pico."
+  },
+  {
+    "id": 27,
+    "tipo": "aberta",
+    "nivel": "Médio",
+    "bloom": "Analisar",
+    "enunciado": "Analise o seguinte caso de uso: 'O usuário informa login e senha; o sistema valida os dados; se estiverem corretos, exibe a tela inicial; se estiverem incorretos, mostra mensagem de erro clara e permite nova tentativa'. Crie dois casos de teste para esse caso de uso, informando entrada, ação e resultado esperado.",
+    "criterios": [
+      "Criar caso de sucesso.",
+      "Criar caso de falha.",
+      "Apresentar entrada, ação e resultado esperado."
+    ],
+    "resposta_esperada": "Caso 1: login e senha válidos; acionar entrar; sistema deve exibir a tela inicial. Caso 2: senha inválida; acionar entrar; sistema deve exibir mensagem clara de erro e permitir nova tentativa."
+  },
+  {
+    "id": 28,
+    "tipo": "aberta",
+    "nivel": "Difícil",
+    "bloom": "Avaliar",
+    "enunciado": "Uma empresa deseja adotar o MPS.BR para atender a um contrato público. Elabore um parecer técnico breve avaliando benefícios e desafios dessa decisão para a qualidade do processo de software.",
+    "criterios": [
+      "Citar benefícios como padronização, controle e melhoria contínua.",
+      "Citar desafios como mudança cultural, treinamento e adaptação de processos.",
+      "Relacionar a decisão à qualidade e competitividade."
+    ],
+    "resposta_esperada": "A adoção pode melhorar padronização, rastreabilidade, produtividade e previsibilidade, tornando a empresa mais competitiva. Porém, exige mudança cultural, treinamento, documentação e esforço de adaptação."
+  },
+  {
+    "id": 29,
+    "tipo": "aberta",
+    "nivel": "Difícil",
+    "bloom": "Criar",
+    "enunciado": "Crie um pequeno plano de avaliação de usabilidade para um aplicativo de agendamento de consultas. Use pelo menos dois métodos de avaliação e explique por que eles foram escolhidos.",
+    "criterios": [
+      "Selecionar métodos adequados, como teste com usuários, questionário, avaliação heurística, card sorting ou teste A/B.",
+      "Justificar os métodos escolhidos.",
+      "Relacionar a avaliação à melhoria da experiência do usuário."
+    ],
+    "resposta_esperada": "Um plano possível inclui teste de usabilidade com usuários para observar dificuldades reais na marcação da consulta e questionários para coletar percepção de satisfação. Também poderia incluir avaliação heurística para identificar problemas de interface."
+  },
+  {
+    "id": 30,
+    "tipo": "aberta",
+    "nivel": "Difícil",
+    "bloom": "Criar",
+    "enunciado": "Com base no mapa mental de qualidade de software estudado, construa um mapa textual que relacione qualidade de produto, requisitos de qualidade, usabilidade e tipos de teste. Em seguida, explique como esses elementos se conectam no ciclo de desenvolvimento.",
+    "criterios": [
+      "Relacionar qualidade de produto a atributos como desempenho, robustez, usabilidade e portabilidade.",
+      "Relacionar requisitos de qualidade a critérios de avaliação.",
+      "Relacionar tipos de teste ao controle da qualidade.",
+      "Explicar a conexão com o ciclo de desenvolvimento."
+    ],
+    "resposta_esperada": "O aluno deve mostrar que requisitos de qualidade orientam testes e decisões de projeto; usabilidade avalia interação com usuário; qualidade de produto depende de atributos técnicos e percepção do usuário; e testes verificam e validam essas características durante o ciclo de desenvolvimento."
+  }
+];
+  </script>
+  <script>
+
+const estado = {
+  aluno: "",
+  turma: "",
+  prova: [],
+  respostas: {},
+  indiceAtual: 0,
+  segundosRestantes: 0,
+  intervalo: null,
+  finalizado: false
+};
+
+const $ = (id) => document.getElementById(id);
+
+function embaralhar(array) {
+  const copia = [...array];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
+function montarProvaPadronizada() {
+  const objetivas = window.QUESTOES.filter(q => q.tipo === "objetiva");
+  const abertas = window.QUESTOES.filter(q => q.tipo === "aberta");
+
+  const selecionadasObjetivas = embaralhar(objetivas).slice(0, 8);
+  const selecionadasAbertas = embaralhar(abertas).slice(0, 2);
+
+  return embaralhar([...selecionadasObjetivas, ...selecionadasAbertas]);
+}
+
+function iniciarProva() {
+  const nome = $("nomeAluno").value.trim();
+  const turma = $("turmaAluno").value.trim();
+  const tempo = parseInt($("tempoProva").value, 10);
+
+  if (!nome) {
+    alert("Informe o nome do aluno antes de iniciar.");
+    return;
+  }
+
+  const objetivas = window.QUESTOES.filter(q => q.tipo === "objetiva");
+  const abertas = window.QUESTOES.filter(q => q.tipo === "aberta");
+
+  if (objetivas.length < 8 || abertas.length < 2) {
+    alert("O banco precisa ter pelo menos 8 questões objetivas e 2 abertas.");
+    return;
+  }
+
+  estado.aluno = nome;
+  estado.turma = turma || "Não informada";
+  estado.prova = montarProvaPadronizada();
+  estado.respostas = {};
+  estado.indiceAtual = 0;
+  estado.finalizado = false;
+  estado.segundosRestantes = tempo * 60;
+
+  $("tela-inicial").classList.add("hidden");
+  $("tela-resultado").classList.add("hidden");
+  $("tela-prova").classList.remove("hidden");
+
+  $("dadosAluno").textContent = `${estado.aluno} • Turma: ${estado.turma}`;
+  configurarCronometro();
+  renderizarQuestao();
+}
+
+function configurarCronometro() {
+  clearInterval(estado.intervalo);
+
+  if (estado.segundosRestantes <= 0) {
+    $("cronometro").textContent = "Sem cronômetro";
+    return;
+  }
+
+  atualizarCronometro();
+
+  estado.intervalo = setInterval(() => {
+    estado.segundosRestantes--;
+    atualizarCronometro();
+
+    if (estado.segundosRestantes <= 0) {
+      clearInterval(estado.intervalo);
+      alert("Tempo encerrado. A prova será finalizada.");
+      finalizarProva(true);
+    }
+  }, 1000);
+}
+
+function atualizarCronometro() {
+  const min = Math.floor(estado.segundosRestantes / 60).toString().padStart(2, "0");
+  const seg = (estado.segundosRestantes % 60).toString().padStart(2, "0");
+  $("cronometro").textContent = `${min}:${seg}`;
+}
+
+function salvarRespostaAtual() {
+  const questao = estado.prova[estado.indiceAtual];
+  if (!questao) return;
+
+  if (questao.tipo === "aberta") {
+    const campo = $("respostaAberta");
+    estado.respostas[questao.id] = campo ? campo.value.trim() : "";
+  }
+}
+
+function renderizarQuestao() {
+  const questao = estado.prova[estado.indiceAtual];
+  const total = estado.prova.length;
+  const numero = estado.indiceAtual + 1;
+
+  $("progresso").textContent = `Questão ${numero} de ${total}`;
+  $("metadadosQuestao").textContent = `${questao.tipo.toUpperCase()} • ${questao.nivel} • Bloom: ${questao.bloom}`;
+  $("barraProgresso").style.width = `${(numero / total) * 100}%`;
+  $("enunciado").textContent = questao.enunciado;
+
+  const area = $("areaResposta");
+  area.innerHTML = "";
+
+  if (questao.tipo === "objetiva") {
+    const alternativas = document.createElement("div");
+    alternativas.className = "alternatives";
+
+    questao.alternativas.forEach((texto, idx) => {
+      const idRadio = `q${questao.id}_alt${idx}`;
+      const label = document.createElement("label");
+      label.className = "option";
+      label.setAttribute("for", idRadio);
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = `questao_${questao.id}`;
+      radio.id = idRadio;
+      radio.value = idx;
+      radio.checked = estado.respostas[questao.id] === idx;
+      radio.addEventListener("change", () => {
+        estado.respostas[questao.id] = idx;
+      });
+
+      const span = document.createElement("span");
+      span.textContent = `${String.fromCharCode(65 + idx)}) ${texto}`;
+
+      label.appendChild(radio);
+      label.appendChild(span);
+      alternativas.appendChild(label);
+    });
+
+    area.appendChild(alternativas);
+  } else {
+    const textarea = document.createElement("textarea");
+    textarea.id = "respostaAberta";
+    textarea.placeholder = "Digite sua resposta aqui...";
+    textarea.value = estado.respostas[questao.id] || "";
+    textarea.addEventListener("input", () => {
+      estado.respostas[questao.id] = textarea.value.trim();
+    });
+    area.appendChild(textarea);
+  }
+
+  $("btnAnterior").disabled = estado.indiceAtual === 0;
+  $("btnProxima").classList.toggle("hidden", estado.indiceAtual === total - 1);
+  $("btnFinalizar").classList.toggle("hidden", estado.indiceAtual !== total - 1);
+}
+
+function proximaQuestao() {
+  salvarRespostaAtual();
+  if (estado.indiceAtual < estado.prova.length - 1) {
+    estado.indiceAtual++;
+    renderizarQuestao();
+  }
+}
+
+function questaoAnterior() {
+  salvarRespostaAtual();
+  if (estado.indiceAtual > 0) {
+    estado.indiceAtual--;
+    renderizarQuestao();
+  }
+}
+
+function questaoRespondida(q) {
+  const r = estado.respostas[q.id];
+  if (q.tipo === "objetiva") return r !== undefined;
+  return typeof r === "string" && r.length > 0;
+}
+
+function finalizarProva(forcar = false) {
+  if (estado.finalizado) return;
+  salvarRespostaAtual();
+
+  const naoRespondidas = estado.prova.filter(q => !questaoRespondida(q)).length;
+
+  if (!forcar && naoRespondidas > 0) {
+    const confirmar = confirm(`Existem ${naoRespondidas} questão(ões) sem resposta. Deseja finalizar mesmo assim?`);
+    if (!confirmar) return;
+  }
+
+  estado.finalizado = true;
+  clearInterval(estado.intervalo);
+
+  $("tela-prova").classList.add("hidden");
+  $("tela-resultado").classList.remove("hidden");
+
+  const { acertos, totalObjetivas } = calcularObjetivas();
+  const abertas = estado.prova.filter(q => q.tipo === "aberta").length;
+  const percentual = totalObjetivas > 0 ? Math.round((acertos / totalObjetivas) * 100) : 0;
+
+  $("detalheResultado").textContent = `${estado.aluno} • Turma: ${estado.turma} • Objetivas: ${acertos}/${totalObjetivas} (${percentual}%) • Abertas para correção manual: ${abertas}`;
+  renderizarResumoFinal();
+}
+
+function calcularObjetivas() {
+  let acertos = 0;
+  let totalObjetivas = 0;
+
+  estado.prova.forEach(q => {
+    if (q.tipo === "objetiva") {
+      totalObjetivas++;
+      if (estado.respostas[q.id] === q.correta) acertos++;
+    }
+  });
+
+  return { acertos, totalObjetivas };
+}
+
+function renderizarResumoFinal() {
+  const resumo = $("resumoFinal");
+  resumo.innerHTML = "";
+
+  estado.prova.forEach((q, idx) => {
+    const card = document.createElement("div");
+    card.className = "review-card";
+
+    if (q.tipo === "objetiva") {
+      const resposta = estado.respostas[q.id];
+      const respostaAluno = resposta === undefined ? "Não respondida" : `${String.fromCharCode(65 + resposta)}) ${q.alternativas[resposta]}`;
+      card.innerHTML = `
+        <p class="tag">Questão ${idx + 1} • Objetiva</p>
+        <h3>${escapeHtml(q.enunciado)}</h3>
+        <p class="answer">Resposta marcada: ${escapeHtml(respostaAluno)}</p>
+      `;
+    } else {
+      const resposta = estado.respostas[q.id] || "Não respondida";
+      card.innerHTML = `
+        <p class="tag">Questão ${idx + 1} • Aberta</p>
+        <h3>${escapeHtml(q.enunciado)}</h3>
+        <p class="answer">Resposta:</p>
+        <p>${escapeHtml(resposta).replace(/\n/g, "<br>")}</p>
+      `;
+    }
+
+    resumo.appendChild(card);
+  });
+}
+
+function gerarConteudoResultado() {
+  const { acertos, totalObjetivas } = calcularObjetivas();
+  const abertas = estado.prova.filter(q => q.tipo === "aberta").length;
+  const percentual = totalObjetivas > 0 ? Math.round((acertos / totalObjetivas) * 100) : 0;
+  const data = new Date().toLocaleString("pt-BR");
+
+  let conteudo = "";
+  conteudo += "RESPOSTAS DA PROVA REMOTA - QUALIDADE E TESTE DE SOFTWARE\n";
+  conteudo += "==========================================================\n";
+  conteudo += `Aluno: ${estado.aluno}\n`;
+  conteudo += `Turma: ${estado.turma}\n`;
+  conteudo += `Data/Hora: ${data}\n`;
+  conteudo += `Objetivas corrigidas automaticamente: ${acertos}/${totalObjetivas} (${percentual}%)\n`;
+  conteudo += `Questões abertas para correção manual: ${abertas}\n`;
+  conteudo += "Observação: as respostas corretas não são exibidas neste arquivo do aluno.\n\n";
+
+  estado.prova.forEach((q, idx) => {
+    conteudo += `QUESTÃO ${idx + 1} | ID ${q.id} | ${q.tipo.toUpperCase()} | ${q.nivel} | Bloom: ${q.bloom}\n`;
+    conteudo += `${q.enunciado}\n`;
+
+    if (q.tipo === "objetiva") {
+      const resposta = estado.respostas[q.id];
+      conteudo += `Resposta do aluno: ${resposta === undefined ? "Não respondida" : String.fromCharCode(65 + resposta)}\n`;
+      conteudo += `Status automático: ${resposta === q.correta ? "Correta" : "Incorreta"}\n`;
+    } else {
+      conteudo += `Resposta do aluno:\n${estado.respostas[q.id] || "Não respondida"}\n`;
+    }
+
+    conteudo += "\n";
+  });
+
+  return conteudo;
+}
+
+function baixarResultado() {
+  const conteudo = gerarConteudoResultado();
+  const blob = new Blob([conteudo], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const nomeArquivo = `respostas_${estado.aluno.replace(/\s+/g, "_").toLowerCase()}_${Date.now()}.txt`;
+  a.href = url;
+  a.download = nomeArquivo;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function copiarResumo() {
+  const { acertos, totalObjetivas } = calcularObjetivas();
+  const abertas = estado.prova.filter(q => q.tipo === "aberta").length;
+  const ids = estado.prova.map(q => q.id).join(", ");
+  const texto = `Aluno: ${estado.aluno}\nTurma: ${estado.turma}\nObjetivas: ${acertos}/${totalObjetivas}\nAbertas: ${abertas}\nIDs sorteados: ${ids}`;
+  try {
+    await navigator.clipboard.writeText(texto);
+    alert("Resumo copiado.");
+  } catch {
+    alert(texto);
+  }
+}
+
+function reiniciar() {
+  clearInterval(estado.intervalo);
+  $("tela-resultado").classList.add("hidden");
+  $("tela-inicial").classList.remove("hidden");
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, (m) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[m]));
+}
+
+$("btnIniciar").addEventListener("click", iniciarProva);
+$("btnProxima").addEventListener("click", proximaQuestao);
+$("btnAnterior").addEventListener("click", questaoAnterior);
+$("btnFinalizar").addEventListener("click", () => finalizarProva(false));
+$("btnBaixarResultado").addEventListener("click", baixarResultado);
+$("btnCopiarResumo").addEventListener("click", copiarResumo);
+$("btnReiniciar").addEventListener("click", reiniciar);
+
+  </script>
+</body>
+</html>
